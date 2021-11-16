@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
 namespace ExchangeAGram.Application.Photos.Commands.AddPhoto
 {
-    class AddPhotoCommandValidator
+    public class AddPhotoCommandValidator : AbstractValidator<AddPhotoCommand>
     {
+        public AddPhotoCommandValidator()
+        {
+            RuleFor(f => f.Name).NotEmpty().WithMessage("name is required.");
+        }
     }
 }
