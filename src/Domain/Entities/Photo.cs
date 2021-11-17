@@ -12,7 +12,6 @@ namespace ExchangeAGram.Domain.Entities
         public int SizeBytes { get; set; }
         public string Path { get; set; }
         public string Extension { get; set; }
-
         public User User { get; set; }
         public IList<Meta> Metas { get; private set; } = new List<Meta>();
         public IList<AlbumPhoto> AlbumPhotos { get; private set; } = new List<AlbumPhoto>();

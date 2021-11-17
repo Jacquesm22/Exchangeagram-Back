@@ -8,7 +8,6 @@ namespace ExchangeAGram.Domain.Entities
         public Guid Id { get; set; }
         public Guid PhotoId { get; set; }
         public Guid AlbumId { get; set; }
-
         public Photo Photo { get; set; }
         public Album Album { get; set; }
     }

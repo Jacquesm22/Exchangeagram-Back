@@ -9,7 +9,6 @@ namespace ExchangeAGram.Domain.Entities
         public Guid UserId { get; set; }
         public Guid SharedUserId { get; set; }
         public Guid AlbumId { get; set; }
-
         public User User { get; set; }
         public User SharedUser { get; set; }
         public Album Album { get; set; }

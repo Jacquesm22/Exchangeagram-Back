@@ -11,7 +11,6 @@ namespace ExchangeAGram.Domain.Entities
         public Guid SharedUserId { get; set; }
         public bool AllowMetaUpdate { get; set; }
         public bool AllowDelete { get; set; }
-
         public Photo Photo { get; set; }
         public User User { get; set; }
         public User SharedUser { get; set; }
