@@ -1,5 +1,7 @@
 ﻿using ExchangeAGram.Application.Common.Interfaces;
+using ExchangeAGram.Application.Common.Models;
 using ExchangeAGram.Infrastructure.Persistence;
+using ExchangeAGram.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,12 @@ namespace ExchangeAGram.Infrastructure
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+
+            services.AddTransient<IIdentityService, IdentityService>();
+
+            services.AddSingleton<IHashService, BasicHashService>();
+
+            services.Configure<AuthenticationSettings>(configuration.GetSection("Authentication"));
 
             return services;
         }

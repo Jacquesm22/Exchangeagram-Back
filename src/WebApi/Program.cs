@@ -1,3 +1,4 @@
+using ExchangeAGram.Application.Common.Interfaces;
 using ExchangeAGram.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,14 @@ namespace ExchangeAGram.WebApi
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
+                    var hashService = services.GetRequiredService<IHashService>();
 
                     if (context.Database.IsSqlServer())
                     {
                         context.Database.Migrate();
                     }
+
+                    await ApplicationDbContextSeed.SeedDefaultUsersAsync(context, hashService);
                 }
                 catch (Exception ex)
                 {

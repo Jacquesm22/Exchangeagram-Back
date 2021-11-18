@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ExchangeAGram.Application.Users.Commands.CreateUser;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,22 +11,12 @@ namespace ExchangeAGram.WebApi.Controllers
     [Authorize]
     public class UserController : ApiControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetUserAction()
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateUserAction(CreateUserCommand command)
         {
-            return Ok();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUserAction([FromRoute] Guid id)
-        {
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUserAction([FromRoute] Guid id)
-        {
-            return Ok();
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
     }
 }
