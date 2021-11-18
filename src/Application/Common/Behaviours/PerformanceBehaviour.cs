@@ -39,7 +39,7 @@ namespace ExchangeAGram.Application.Common.Behaviours
 
                 string userId = _currentUserService.UserId?.ToString() ?? "(no user)";
 
-                _logger.LogWarning("CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
+                _logger.LogWarning("Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
                     requestName, elapsedMilliseconds, userId, request);
             }
 

@@ -23,7 +23,7 @@ namespace ExchangeAGram.Application.Common.Behaviours
 
             string userId = _currentUserService.UserId?.ToString() ?? "(no user)";
 
-            _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@Request}",
+            _logger.LogInformation("Request: {Name} {@UserId} {@Request}",
                 requestName, userId, request);
 
             return Task.CompletedTask;

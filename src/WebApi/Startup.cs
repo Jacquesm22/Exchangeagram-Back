@@ -1,10 +1,12 @@
 using ExchangeAGram.Application;
 using ExchangeAGram.Application.Common.Interfaces;
 using ExchangeAGram.Infrastructure;
+using ExchangeAGram.WebApi.Filters;
 using ExchangeAGram.WebApi.Services;
 using ExchangeAGram.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +29,16 @@ namespace ExchangeAGram.WebApi
             services.AddInfrastructure(Configuration);
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             services.AddHttpContextAccessor();
+
+            services.AddControllersWithViews(options =>
+                options.Filters.Add<ApiExceptionFilterAttribute>());
+
+            // Customise default API behaviour
+            services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true);
+
             services.AddCors();
 
             services.AddControllers();
