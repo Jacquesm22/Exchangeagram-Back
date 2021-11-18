@@ -30,7 +30,7 @@ namespace ExchangeAGram.Infrastructure.Services
                 };
             }
 
-            bool validLogin = _hashService.Hash(user.Password) == _hashService.Hash(password);
+            bool validLogin = user.Password == _hashService.Hash(password);
             if (!validLogin)
             {
                 return new AuthenticateResultModel

@@ -21,6 +21,7 @@ namespace ExchangeAGram.Infrastructure
 
             services.AddTransient<IIdentityService, IdentityService>();
 
+            services.AddSingleton<IJwtTokenBuilder, JwtTokenBuilderService>();
             services.AddSingleton<IHashService, BasicHashService>();
 
             services.Configure<AuthenticationSettings>(configuration.GetSection("Authentication"));
