@@ -10,48 +10,48 @@ using System.Threading.Tasks;
 
 namespace ExchangeAGram.Application.Albums.Commands.AddAlbum
 {
-    [CustomAuthorize(Roles = Roles.Admin)]
-    public class AddAlbumCommand : IRequest<CommandResult>
-    {
-        public string Name { get; set; }
-    }
+    //[CustomAuthorize(Roles = Roles.Admin)]
+    //public class AddAlbumCommand : IRequest<CommandResult>
+    //{
+    //    public string Name { get; set; }
+    //}
 
-    class AddAlbumCommandHandler : IRequestHandler<AddAlbumCommand, CommandResult>
-    {
-        private readonly IApplicationDbContext _context;
+    //class AddAlbumCommandHandler : IRequestHandler<AddAlbumCommand, CommandResult>
+    //{
+    //    private readonly IApplicationDbContext _context;
 
-        public AddAlbumCommandHandler(IApplicationDbContext context)
-        {
-            _context = context;
-        }
+    //    public AddAlbumCommandHandler(IApplicationDbContext context)
+    //    {
+    //        _context = context;
+    //    }
 
-        public async Task<CommandResult> Handle(AddAlbumCommand request, CancellationToken cancellationToken)
-        {
-            bool duplicateAlbum = await _context.Albums.AnyAsync(a => a.Name.ToLower() == request.Name.ToLower(), cancellationToken);
+    //    public async Task<CommandResult> Handle(AddAlbumCommand request, CancellationToken cancellationToken)
+    //    {
+    //        bool duplicateAlbum = await _context.Albums.AnyAsync(a => a.Name.ToLower() == request.Name.ToLower(), cancellationToken);
 
-            if (duplicateAlbum)
-            {
-                return new CommandResult
-                {
-                    Message = "Album already exists",
-                    Success = false
-                };
-            }
+    //        if (duplicateAlbum)
+    //        {
+    //            return new CommandResult
+    //            {
+    //                Message = "Album already exists",
+    //                Success = false
+    //            };
+    //        }
 
-            var newAlbum = new Album
-            {
-                Name = request.Name
-            };
+    //        var newAlbum = new Album
+    //        {
+    //            Name = request.Name
+    //        };
 
-            await _context.Albums.AddAsync(newAlbum, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+    //        await _context.Albums.AddAsync(newAlbum, cancellationToken);
+    //        await _context.SaveChangesAsync(cancellationToken);
 
-            return new CommandResult
-            {
-                Data = newAlbum.Id,
-                Message = "Album created",
-                Success = true
-            };
-        }
-    }
+    //        return new CommandResult
+    //        {
+    //            Data = newAlbum.Id,
+    //            Message = "Album created",
+    //            Success = true
+    //        };
+    //    }
+    //}
 }

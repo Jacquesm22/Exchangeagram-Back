@@ -13,6 +13,5 @@ namespace ExchangeAGram.Domain.Entities
         public bool AllowDelete { get; set; }
         public Photo Photo { get; set; }
         public User User { get; set; }
-        public User SharedUser { get; set; }
     }
 }

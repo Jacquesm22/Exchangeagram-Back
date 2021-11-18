@@ -1,5 +1,8 @@
 using ExchangeAGram.Application;
+using ExchangeAGram.Application.Common.Interfaces;
 using ExchangeAGram.Infrastructure;
+using ExchangeAGram.WebApi.Services;
+using ExchangeAGram.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +26,13 @@ namespace ExchangeAGram.WebApi
             services.AddApplication();
             services.AddInfrastructure(Configuration);
 
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddHttpContextAccessor();
+            services.AddCors();
+
             services.AddControllers();
+
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

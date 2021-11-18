@@ -1,4 +1,4 @@
-﻿namespace ExchangeAGram.Application.Album.Dtos
+﻿namespace ExchangeAGram.Application.Albums.Dtos
 {
     public class UpdateAlbumDto
     {
