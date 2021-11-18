@@ -56,6 +56,16 @@ namespace ExchangeAGram.WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+            app.UseCors(p =>
+            {
+                p
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(_ => true)
+                .AllowCredentials()
+                .WithExposedHeaders("Content-Disposition");
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
