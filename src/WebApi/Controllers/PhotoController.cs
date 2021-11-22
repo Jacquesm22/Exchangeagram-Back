@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ExchangeAGram.Application.Photos.Commands.UploadPhoto;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ExchangeAGram.WebApi.Controllers
@@ -8,22 +11,35 @@ namespace ExchangeAGram.WebApi.Controllers
     [Authorize]
     public class PhotoController : ApiControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetPhotoAction()
+        [HttpPost]
+        public async Task<IActionResult> GetPhotoAction([FromForm] IFormFile file)
         {
-            return Ok();
+            var command = new UploadPhotoCommand
+            {
+                FileBytes = GetBytesFromFormFile(file),
+                FileName = file.FileName
+            };
+
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePhotoAction([FromRoute] Guid id)
+        private static byte[] GetBytesFromFormFile(IFormFile formFile)
         {
-            return Ok();
-        }
+            if (formFile == null)
+            {
+                throw new ArgumentNullException(nameof(formFile));
+            }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePhotoAction([FromRoute] Guid id)
-        {
-            return Ok();
+            if (formFile.Length == 0)
+            {
+                return Array.Empty<byte>();
+            }
+
+            using var ms = new MemoryStream();
+            formFile.CopyTo(ms);
+            var fileBytes = ms.ToArray();
+            return fileBytes;
         }
     }
 }

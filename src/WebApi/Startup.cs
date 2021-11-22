@@ -1,6 +1,7 @@
 using ExchangeAGram.Application;
 using ExchangeAGram.Application.Common.Interfaces;
 using ExchangeAGram.Infrastructure;
+using ExchangeAGram.WebApi.Auth;
 using ExchangeAGram.WebApi.Filters;
 using ExchangeAGram.WebApi.Services;
 using ExchangeAGram.WebApi.Swagger;
@@ -32,16 +33,19 @@ namespace ExchangeAGram.WebApi
 
             services.AddHttpContextAccessor();
 
-            services.AddControllersWithViews(options =>
-                options.Filters.Add<ApiExceptionFilterAttribute>());
-
-            // Customise default API behaviour
-            services.Configure<ApiBehaviorOptions>(options =>
-                options.SuppressModelStateInvalidFilter = true);
-
             services.AddCors();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<ApiExceptionFilterAttribute>();
+
+                // Customise default API behaviour
+                services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true);
+            });
+
+            // Authentication
+            services.ConfigureAuthentication(Configuration);
 
             services.AddSwagger();
         }
@@ -67,6 +71,8 @@ namespace ExchangeAGram.WebApi
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

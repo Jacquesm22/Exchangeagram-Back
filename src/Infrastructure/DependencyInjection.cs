@@ -23,7 +23,9 @@ namespace ExchangeAGram.Infrastructure
 
             services.AddSingleton<IJwtTokenBuilder, JwtTokenBuilderService>();
             services.AddSingleton<IHashService, BasicHashService>();
+            services.AddSingleton<ISystemFileService, SystemFileService>();
 
+            services.Configure<SystemFileSettings>(configuration.GetSection("SystemFiles"));
             services.Configure<AuthenticationSettings>(configuration.GetSection("Authentication"));
 
             return services;
