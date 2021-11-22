@@ -11,26 +11,44 @@ namespace ExchangeAGram.Application.Photos.Queries.GetPhotos
 {
     public class GetPhotosQuery : IRequest<IList<GetPhotosDto>>
     {
+        public bool CurrentUser { get; set; }
     }
 
     class GetPhotosQueryHandler : IRequestHandler<GetPhotosQuery, IList<GetPhotosDto>>
     {
         private readonly IApplicationDbContext _context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public GetPhotosQueryHandler(IApplicationDbContext context)
+        public GetPhotosQueryHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
         {
             _context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<IList<GetPhotosDto>> Handle(GetPhotosQuery request, CancellationToken cancellationToken)
         {
-            var photos = await _context.Photos.OrderByDescending(o => o.Created).Select(s => new GetPhotosDto
+            var photos = new List<GetPhotosDto>();
+
+            if (request.CurrentUser)
             {
-                Id = s.Id,
-                Date = s.Created,
-                User = s.User.Username,
-                Name = s.Name
-            }).ToListAsync(cancellationToken);
+                photos = await _context.Photos.Where(w => w.UserId.ToString() == _currentUserService.UserId).OrderByDescending(o => o.Created).Select(s => new GetPhotosDto
+                {
+                    Id = s.Id,
+                    Date = s.Created,
+                    User = s.User.Username,
+                    Name = s.Name
+                }).ToListAsync(cancellationToken);
+            }
+            else 
+            {
+                photos = await _context.Photos.OrderByDescending(o => o.Created).Select(s => new GetPhotosDto
+                {
+                    Id = s.Id,
+                    Date = s.Created,
+                    User = s.User.Username,
+                    Name = s.Name
+                }).ToListAsync(cancellationToken);
+            }
 
             return photos;
         }

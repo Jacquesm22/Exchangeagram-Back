@@ -1,4 +1,5 @@
 ﻿using ExchangeAGram.Application.Photos.Commands.UploadPhoto;
+using ExchangeAGram.Application.Photos.Queries.GetPhotoImage;
 using ExchangeAGram.Application.Photos.Queries.GetPhotos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,11 +33,25 @@ namespace ExchangeAGram.WebApi.Controllers
             return Ok(photos);
         }
 
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUserPhotosAction()
+        {
+            var photos = await Mediator.Send(new GetPhotosQuery 
+            {
+                CurrentUser = true
+            });
+            return Ok(photos);
+        }
+
         [AllowAnonymous]
         [HttpGet("{id}/image")]
-        public async Task<IActionResult> GetPhotoImageAction([FromRoute] Guid id) 
+        public async Task GetPhotoImageAction([FromRoute] Guid id) 
         {
-            return Ok();
+            var image = await Mediator.Send(new GetPhotoImageQuery 
+            {
+                PhotoId = id
+            });
+            await Response.Body.WriteAsync(image, 0, image.Length);
         }
 
         private static byte[] GetBytesFromFormFile(IFormFile formFile)
