@@ -1,4 +1,5 @@
 ﻿using ExchangeAGram.Application.Photos.Commands.UploadPhoto;
+using ExchangeAGram.Application.Photos.Queries.GetPhotos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,8 @@ namespace ExchangeAGram.WebApi.Controllers
     [Authorize]
     public class PhotoController : ApiControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> GetPhotoAction([FromForm] IFormFile file)
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadPhotoAction([FromForm] IFormFile file)
         {
             var command = new UploadPhotoCommand
             {
@@ -20,8 +21,22 @@ namespace ExchangeAGram.WebApi.Controllers
                 FileName = file.FileName
             };
 
-            var result = await Mediator.Send(command);
-            return Ok(result);
+            await Mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPhotosAction() 
+        {
+            var photos = await Mediator.Send(new GetPhotosQuery());
+            return Ok(photos);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetPhotoImageAction([FromRoute] Guid id) 
+        {
+            return Ok();
         }
 
         private static byte[] GetBytesFromFormFile(IFormFile formFile)
